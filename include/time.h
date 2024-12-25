@@ -1,0 +1,8 @@
+#ifndef TIME_H
+#define TIME_H
+
+#define MILLISECONDS_TO_MICROSECONDS (1000U)
+
+#define TIME_4_MS (4U * MILLISECONDS_TO_MICROSECONDS)
+
+#endif /* TIME_H */
