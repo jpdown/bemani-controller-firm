@@ -49,3 +49,5 @@ endif()
 # create map/bin/hex file etc.
 pico_add_extra_outputs(bemani)
 
+pico_enable_stdio_usb(bemani 1)
+pico_enable_stdio_uart(bemani 0)
