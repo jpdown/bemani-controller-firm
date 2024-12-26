@@ -40,7 +40,7 @@ add_executable(bemani ${sources})
 target_include_directories(bemani PUBLIC "${CMAKE_SOURCE_DIR}/include")
 
 # pull in common dependencies
-target_link_libraries(bemani pico_stdlib hardware_pio)
+target_link_libraries(bemani pico_stdlib hardware_pio tinyusb_device)
 
 if (PICO_CYW43_SUPPORTED)
     target_link_libraries(blink pico_cyw43_arch_none)
@@ -49,7 +49,7 @@ endif()
 # create map/bin/hex file etc.
 pico_add_extra_outputs(bemani)
 
-pico_enable_stdio_usb(bemani 1)
-pico_enable_stdio_uart(bemani 0)
+# pico_enable_stdio_usb(bemani 1)
+# pico_enable_stdio_uart(bemani 0)
 
 pico_generate_pio_header(bemani ${CMAKE_CURRENT_LIST_DIR}/src/encoder.pio)
