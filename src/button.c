@@ -8,7 +8,7 @@ static button_state_t states[NUM_BUTTONS];
 void button_init(void) {
   for (int i = 0; i < NUM_BUTTONS; i++) {
     states[i] = (button_state_t){
-        .pin_pressed = false, .transition_time = 0U, .pressed = false};
+        .pin_state = false, .transition_time = 0U, .pressed = false};
 
     gpio_init(BUTTON_TO_PIN_MAP[i]);
     gpio_set_input_enabled(BUTTON_TO_PIN_MAP[i], true);
@@ -40,21 +40,20 @@ void debounce_eager(button_state_t *button, bool new_pin_state) {
   if ((new_pin_state != button->pressed) &&
       (time_elapsed >= DEBOUNCE_TIME_MS)) {
     button->pressed = new_pin_state;
+    button->transition_time = time_us_32();
     LOG_DEBUG("BUTTON CHANGED STATES TO %d", new_pin_state);
   }
 
-  if (new_pin_state != button->pin_pressed) {
-    button->transition_time = time_us_32();
-    button->pin_pressed = new_pin_state;
-  }
+  // set this in case we switch to deferred while running
+  button->pin_state = new_pin_state;
 }
 
 void debounce_deferred(button_state_t *button, bool new_pin_state) {
   // do not transition until debounce time
 
-  if (new_pin_state != button->pin_pressed) {
+  if (new_pin_state != button->pin_state) {
     button->transition_time = time_us_32();
-    button->pin_pressed = new_pin_state;
+    button->pin_state = new_pin_state;
   }
 
   uint32_t time_elapsed = time_us_32() - button->transition_time;
@@ -67,6 +66,6 @@ void debounce_deferred(button_state_t *button, bool new_pin_state) {
 }
 
 void debounce_none(button_state_t *button, bool new_pin_state) {
-  button->pin_pressed = new_pin_state;
+  button->pin_state = new_pin_state;
   button->pressed = new_pin_state;
 }

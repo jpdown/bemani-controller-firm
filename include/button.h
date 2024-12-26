@@ -27,7 +27,7 @@ static uint8_t BUTTON_TO_PIN_MAP[NUM_BUTTONS] = {2,  4,  6,  8,  10, 12,
                                                  14, 16, 18, 20, 22};
 
 typedef struct {
-  bool pin_pressed;
+  bool pin_state;
   uint32_t transition_time;
   bool pressed;
 } button_state_t;
