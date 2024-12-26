@@ -1,4 +1,5 @@
 #include "usb.hpp"
+#include "bsp/board_api.h"
 #include "button.hpp"
 #include "class/hid/hid_device.h"
 #include "device/usbd.h"
@@ -8,22 +9,25 @@
 
 void usb_init(void) {
   tusb_init();
+  if (board_init_after_tusb) {
+    board_init_after_tusb();
+  }
   return;
 }
 
 void usb_task(void) {
   tud_task();
-  if (!tud_hid_ready()) {
-    return;
-  }
-
-  if (button_pressed(KEY1)) {
-    uint8_t keycode[6] = {0};
-    keycode[0] = HID_KEY_A;
-    tud_hid_keyboard_report(REPORT_ID_GAMEPAD, 0, keycode);
-  } else {
-    tud_hid_keyboard_report(REPORT_ID_GAMEPAD, 0, NULL);
-  }
+  // if (!tud_hid_ready()) {
+  //   return;
+  // }
+  //
+  // if (button_pressed(KEY1)) {
+  //   uint8_t keycode[6] = {0};
+  //   keycode[0] = HID_KEY_A;
+  //   tud_hid_keyboard_report(REPORT_ID_GAMEPAD, 0, keycode);
+  // } else {
+  //   tud_hid_keyboard_report(REPORT_ID_GAMEPAD, 0, NULL);
+  // }
 
   return;
 }

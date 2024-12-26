@@ -40,7 +40,7 @@ add_executable(bemani ${sources})
 target_include_directories(bemani PUBLIC "${CMAKE_SOURCE_DIR}/include")
 
 # pull in common dependencies
-target_link_libraries(bemani pico_stdlib hardware_pio tinyusb_device)
+target_link_libraries(bemani pico_stdlib hardware_pio tinyusb_device tinyusb_board)
 
 if (PICO_CYW43_SUPPORTED)
     target_link_libraries(blink pico_cyw43_arch_none)

@@ -24,6 +24,7 @@
  */
 
 #include "usb_descriptors.h"
+#include "bsp/board_api.h"
 #include "tusb.h"
 
 /* A combination of interfaces must have a unique product id, since PC will save
@@ -74,7 +75,8 @@ uint8_t const *tud_descriptor_device_cb(void) {
 //--------------------------------------------------------------------+
 
 uint8_t const desc_hid_report[] = {
-    TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(REPORT_ID_GAMEPAD))};
+    TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(REPORT_ID_GAMEPAD)),
+};
 
 // Invoked when received GET HID REPORT DESCRIPTOR
 // Application return pointer to descriptor
@@ -198,6 +200,10 @@ uint16_t const *tud_descriptor_string_cb(uint8_t index, uint16_t langid) {
   case STRID_LANGID:
     memcpy(&_desc_str[1], string_desc_arr[0], 2);
     chr_count = 1;
+    break;
+
+  case STRID_SERIAL:
+    chr_count = board_usb_get_serial(_desc_str + 1, 32);
     break;
 
   default:
