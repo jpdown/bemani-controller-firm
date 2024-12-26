@@ -1,5 +1,5 @@
-#include "button.h"
-#include "logger.h"
+#include "button.hpp"
+#include "logger.hpp"
 #include <hardware/gpio.h>
 #include <hardware/timer.h>
 

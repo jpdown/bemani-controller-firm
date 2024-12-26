@@ -1,7 +1,7 @@
 #include <pico/stdio.h>
 #include <stdio.h>
 
-#include "logger.h"
+#include "logger.hpp"
 
 static log_level_t current_log_level = DEFAULT_LOG_LEVEL;
 
