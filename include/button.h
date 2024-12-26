@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "time.h"
+#include "time_utils.h"
 
 typedef enum {
   KEY1,
