@@ -49,7 +49,6 @@ endif()
 # create map/bin/hex file etc.
 pico_add_extra_outputs(bemani)
 
-# pico_enable_stdio_usb(bemani 1)
-# pico_enable_stdio_uart(bemani 0)
+pico_enable_stdio_usb(bemani 1)
 
 pico_generate_pio_header(bemani ${CMAKE_CURRENT_LIST_DIR}/src/encoder.pio)
