@@ -1,3 +1,5 @@
+#include <hardware/gpio.h>
+#include <hardware/structs/io_bank0.h>
 #include <pico/stdio.h>
 #include <stdio.h>
 
@@ -7,7 +9,12 @@ static log_level_t current_log_level = DEFAULT_LOG_LEVEL;
 
 static const char *log_level_to_string(log_level_t level);
 
-void logger_init(void) { stdio_init_all(); }
+void logger_init(void) {
+  // TODO: define these
+  gpio_set_function(16, GPIO_FUNC_UART);
+  gpio_set_function(17, GPIO_FUNC_UART);
+  stdio_init_all();
+}
 
 void print_log(log_level_t level, const char *format, ...) {
   if (level < current_log_level) {
