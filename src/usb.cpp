@@ -8,10 +8,8 @@
 #include <tusb.h>
 
 void usb_init(void) {
+  board_init();
   tusb_init();
-  if (board_init_after_tusb) {
-    board_init_after_tusb();
-  }
   return;
 }
 
