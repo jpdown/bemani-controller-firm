@@ -19,7 +19,8 @@ void button_init(void) {
 void button_task(void) {
   for (int i = 0; i < NUM_BUTTONS; i++) {
     bool pin_state = gpio_get(BUTTON_TO_PIN_MAP[i]);
-    debounce_funcs[DEFAULT_DEBOUNCE_STRATEGY](&states[i], pin_state);
+    // Invert the pin state because it is a pull up
+    debounce_funcs[DEFAULT_DEBOUNCE_STRATEGY](&states[i], !pin_state);
   }
 }
 

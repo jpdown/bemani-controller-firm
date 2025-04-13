@@ -3,6 +3,7 @@
 #include "button.hpp"
 #include "class/hid/hid_device.h"
 #include "device/usbd.h"
+#include "encoder.hpp"
 #include "usb_descriptors.h"
 
 #include <tusb.h>
@@ -14,20 +15,21 @@ void usb_init(void) {
 }
 
 void usb_task(void) {
+  joystick_report_t report = {0};
+
   tud_task();
   if (!tud_hid_ready()) {
     return;
   }
 
-  if (button_pressed(KEY1)) {
-    uint8_t keycode[6] = {0};
-    keycode[0] = HID_KEY_A;
-    tud_hid_keyboard_report(REPORT_ID_JOYSTICK, 0, keycode);
-  } else {
-    tud_hid_keyboard_report(REPORT_ID_JOYSTICK, 0, NULL);
+  for (int8_t i = 0; i < NUM_BUTTONS; i++) {
+    bool pressed = button_pressed((button_t)i);
+    report.buttons = (report.buttons & ~(1U << i)) | (pressed << i);
   }
 
-  return;
+  report.x = get_encoder_value();
+
+  tud_hid_n_report(0x00, REPORT_ID_JOYSTICK, &report, sizeof(report));
 }
 
 extern "C" void tud_hid_set_report_cb(uint8_t instance, uint8_t report_id,
